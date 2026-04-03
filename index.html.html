@@ -3,40 +3,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ACShop Secure Public</title>
+  <title>ACShop Secure Public Pro</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     :root{--bg:#f6f7fb;--card:#ffffff;--soft:#eef2ff;--text:#0f172a;--dim:#64748b;--line:#e2e8f0;--accent:#2563eb;--accent2:#1d4ed8;--ok:#16a34a;--danger:#dc2626;--r:18px}
     *{box-sizing:border-box} body{margin:0;font-family:Inter,'Noto Sans Thai',sans-serif;background:var(--bg);color:var(--text)}
-    .nav{position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:14px 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+    .nav{position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:14px 24px;background:rgba(255,255,255,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
     .logo{font-weight:800;letter-spacing:-.03em}.chip{padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--dim);font-size:13px}
-    .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
-    .hero{padding:64px 0 28px}.heroBox{display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:stretch}
-    .heroMain,.heroSide{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:28px;box-shadow:0 18px 60px rgba(15,23,42,.05)}
-    .eyebrow{font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.14em;text-transform:uppercase}.hero h1{font-size:clamp(34px,6vw,62px);line-height:1.02;letter-spacing:-.05em;margin:10px 0 14px}.sub{font-size:16px;color:var(--dim);line-height:1.8;max-width:640px}
+    .wrap{max-width:1180px;margin:0 auto;padding:0 20px}.hero{padding:54px 0 24px}.heroBox{display:grid;grid-template-columns:1.15fr .85fr;gap:20px}.heroMain,.heroSide{background:#fff;border:1px solid var(--line);border-radius:30px;padding:28px;box-shadow:0 18px 60px rgba(15,23,42,.05)}
+    .eyebrow{font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.14em;text-transform:uppercase}.hero h1{font-size:clamp(34px,6vw,62px);line-height:1.02;letter-spacing:-.05em;margin:10px 0 14px}.sub{font-size:16px;color:var(--dim);line-height:1.8;max-width:650px}
     .ticker{margin-top:18px;overflow:hidden;border-radius:999px;border:1px solid var(--line);background:#fff}.tickerTrack{display:flex;gap:28px;padding:12px 18px;white-space:nowrap;animation:mar 24s linear infinite}.tickerTrack span{color:var(--dim);font-size:13px}.tickerTrack b{color:var(--text)} @keyframes mar{from{transform:translateX(0)}to{transform:translateX(-50%)}}
     .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}.stat{padding:16px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,#fff,#f8fafc)}.stat .v{font-size:28px;font-weight:800;letter-spacing:-.04em}.stat .l{font-size:13px;color:var(--dim)}
+    .memberCard{margin-top:16px;padding:16px;border-radius:20px;background:linear-gradient(180deg,#eff6ff,#ffffff);border:1px solid #cfe0ff}.memberTitle{font-size:14px;font-weight:800;margin-bottom:6px}
     .section{padding:22px 0 38px}.sectionHead{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:18px}.section h2{margin:0;font-size:28px;letter-spacing:-.03em}.section p{margin:6px 0 0;color:var(--dim)}
-    .tools{display:flex;gap:12px;flex-wrap:wrap}.input,.select{height:44px;border:1px solid var(--line);border-radius:14px;padding:0 14px;background:#fff;font:inherit}.input{min-width:260px}
+    .tools{display:flex;gap:12px;flex-wrap:wrap}.input,.select,.textarea{height:44px;border:1px solid var(--line);border-radius:14px;padding:0 14px;background:#fff;font:inherit;width:100%}.input{min-width:260px}.textarea{height:auto;min-height:96px;padding:12px 14px;resize:vertical}
     .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}.card{background:#fff;border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:0 10px 30px rgba(15,23,42,.04)}
     .image{aspect-ratio:1/1;background:linear-gradient(135deg,#eff6ff,#f8fafc);display:flex;align-items:center;justify-content:center;font-size:48px}.body{padding:16px 16px 18px}.badge{display:inline-flex;padding:6px 10px;border-radius:999px;font-size:12px;background:var(--soft);color:var(--accent);font-weight:700;margin-bottom:8px}
     .title{font-size:17px;font-weight:700;letter-spacing:-.02em;margin-bottom:6px}.desc{font-size:13px;line-height:1.7;color:var(--dim);min-height:44px}.priceRow{display:flex;gap:8px;align-items:end;margin:14px 0}.price{font-size:24px;font-weight:800;letter-spacing:-.04em}.compare{font-size:14px;color:#94a3b8;text-decoration:line-through}
-    .stock{font-size:12px;color:var(--ok);font-weight:700}.btn{height:42px;border:none;border-radius:14px;padding:0 16px;font:inherit;font-weight:700;cursor:pointer}.btnPrimary{background:var(--accent);color:#fff}.btnPrimary:hover{background:var(--accent2)}
-    .drawerMask{position:fixed;inset:0;background:rgba(15,23,42,.32);display:none;align-items:stretch;justify-content:flex-end}.drawerMask.open{display:flex}.drawer{width:min(420px,100vw);background:#fff;padding:18px;border-left:1px solid var(--line);display:flex;flex-direction:column}
-    .drawerHead{display:flex;justify-content:space-between;align-items:center}.cartList{flex:1;overflow:auto;margin-top:14px}.cartItem{display:grid;grid-template-columns:1fr auto;gap:8px;padding:12px 0;border-bottom:1px solid var(--line)} .muted{color:var(--dim)}
-    .empty,.notice{padding:24px;border:1px dashed var(--line);border-radius:20px;background:#fff;color:var(--dim);text-align:center}
-    .checkout{display:grid;gap:10px}.footer{padding:30px 0 60px;color:var(--dim);font-size:13px}
-    @media(max-width:860px){.heroBox{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.sectionHead{align-items:start;flex-direction:column}.input{min-width:100%}}
+    .stock{font-size:12px;color:var(--ok);font-weight:700}.btn{height:42px;border:none;border-radius:14px;padding:0 16px;font:inherit;font-weight:700;cursor:pointer}.btnPrimary{background:var(--accent);color:#fff}.btnPrimary:hover{background:var(--accent2)} .btnLight{background:#eff6ff;color:#1d4ed8}.btnGhost{background:#fff;border:1px solid var(--line)}
+    .drawerMask,.modalMask{position:fixed;inset:0;background:rgba(15,23,42,.32);display:none;align-items:stretch;justify-content:flex-end;z-index:40}.drawerMask.open,.modalMask.open{display:flex}
+    .drawer{width:min(460px,100vw);background:#fff;padding:18px;border-left:1px solid var(--line);display:flex;flex-direction:column}
+    .modalMask{justify-content:center;align-items:center;padding:20px}.modal{width:min(760px,100%);max-height:90vh;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:28px;padding:24px;box-shadow:0 26px 90px rgba(15,23,42,.24)}
+    .drawerHead,.modalHead{display:flex;justify-content:space-between;align-items:center}.cartList{flex:1;overflow:auto;margin-top:14px}.cartItem{display:grid;grid-template-columns:1fr auto;gap:8px;padding:12px 0;border-bottom:1px solid var(--line)} .muted{color:var(--dim)}
+    .empty,.notice{padding:24px;border:1px dashed var(--line);border-radius:20px;background:#fff;color:var(--dim);text-align:center}.alert{padding:12px 14px;border-radius:14px;background:#fff1f2;color:#b91c1c;border:1px solid #fecdd3;font-size:14px;display:none}.alert.show{display:block}
+    .checkout{display:grid;gap:10px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.seg{display:flex;gap:10px;background:#f8fafc;border:1px solid var(--line);padding:6px;border-radius:16px}.seg button{flex:1;height:42px;border:none;border-radius:12px;background:transparent;font:inherit;font-weight:700;cursor:pointer}.seg button.active{background:#fff;box-shadow:0 2px 8px rgba(15,23,42,.08)}
+    .footer{padding:30px 0 60px;color:var(--dim);font-size:13px}
+    @media(max-width:860px){.heroBox,.grid2{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.sectionHead{align-items:start;flex-direction:column}.input{min-width:100%}}
   </style>
 </head>
 <body>
   <div class="nav">
     <div class="logo">ACShop</div>
-    <div style="display:flex;gap:10px;align-items:center">
-      <span class="chip" id="shopHealth">Database ready</span>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
+      <span class="chip" id="memberChip">ลูกค้าทั่วไป</span>
+      <button class="btn btnLight" onclick="openAuthModal()" id="memberBtn">เข้าสู่ระบบ / สมัครสมาชิก</button>
       <button class="btn btnPrimary" onclick="openCart()">ตะกร้า <span id="cartCount">0</span></button>
     </div>
   </div>
@@ -47,17 +50,20 @@
         <div class="heroMain">
           <div class="eyebrow" id="heroEyebrow">ACSHOP</div>
           <h1 id="heroTitle">อะไหล่ปริ้นเตอร์ พร้อมส่ง</h1>
-          <div class="sub" id="heroSubtitle">หน้าร้านเวอร์ชันเชื่อมฐานข้อมูลจริง และแยกจากหลังบ้านแล้ว</div>
+          <div class="sub" id="heroSubtitle">สมาชิกสั่งซื้อรอบถัดไปได้ไวขึ้น เพราะระบบจำชื่อ เบอร์ และที่อยู่ให้แล้ว</div>
           <div class="ticker"><div class="tickerTrack" id="tickerTrack"></div></div>
         </div>
         <div class="heroSide">
-          <div class="eyebrow">สถานะระบบ</div>
+          <div class="eyebrow">ระบบสมาชิก</div>
           <div class="stats">
             <div class="stat"><div class="v" id="statProducts">0</div><div class="l">สินค้าที่เปิดขาย</div></div>
             <div class="stat"><div class="v" id="statFeatured">0</div><div class="l">สินค้าปักหมุด</div></div>
             <div class="stat"><div class="v" id="statStock">0</div><div class="l">สต๊อกพร้อมขาย</div></div>
           </div>
-          <div style="margin-top:16px" class="muted">ไฟล์นี้อ่านเฉพาะสินค้าที่เปิดขายจากฐานข้อมูลผ่าน RLS เท่านั้น</div>
+          <div class="memberCard">
+            <div class="memberTitle">ลูกค้าครั้งแรกเลือกสมัครได้ 2 แบบ</div>
+            <div class="muted">1. บุคคลธรรมดา 2. นิติบุคคล — รอบต่อไประบบจะช่วยกรอกชื่อ ที่อยู่จัดส่ง และเบอร์ให้อัตโนมัติเมื่อเข้าสู่ระบบ</div>
+          </div>
         </div>
       </div>
     </section>
@@ -66,7 +72,7 @@
       <div class="sectionHead">
         <div>
           <h2>สินค้าพร้อมขาย</h2>
-          <p>ดึงจาก `catalog_products` และเช็คจำนวนคงเหลือจาก `inventory`</p>
+          <p>เชื่อมฐานข้อมูลจริง พร้อมระบบสมาชิกและ checkout</p>
         </div>
         <div class="tools">
           <input class="input" id="searchInput" placeholder="ค้นหาชื่อหรือ SKU" oninput="renderProducts()" />
@@ -82,19 +88,121 @@
       <div id="shopNotice" class="notice" style="display:none;margin-top:14px"></div>
     </section>
 
-    <div class="footer">ACShop Secure Starter — แยกหน้าร้านออกจากหลังบ้านแล้ว</div>
+    <div class="footer">ACShop Secure Pro — มีสมาชิก, checkout, และบันทึกข้อมูลลูกค้าได้แล้ว</div>
   </div>
 
   <div class="drawerMask" id="drawerMask" onclick="if(event.target===this) closeCart()">
     <div class="drawer">
       <div class="drawerHead">
         <h3 style="margin:0">ตะกร้าสินค้า</h3>
-        <button class="btn" onclick="closeCart()">ปิด</button>
+        <button class="btn btnGhost" onclick="closeCart()">ปิด</button>
       </div>
       <div class="cartList" id="cartList"></div>
       <div class="checkout">
         <div style="display:flex;justify-content:space-between"><strong>รวม</strong><strong id="cartTotal">฿0</strong></div>
-        <div class="muted" style="font-size:13px">ตัวอย่างนี้ยังไม่เชื่อม checkout จริง เพื่อกันการเขียน order จากฝั่ง public แบบไม่ครบ flow</div>
+        <div class="muted" style="font-size:13px" id="checkoutHint">สั่งซื้อแบบสมาชิกได้ ข้อมูลลูกค้าจะถูกจำไว้สำหรับครั้งถัดไป</div>
+        <button class="btn btnPrimary" onclick="openCheckout()">ดำเนินการสั่งซื้อ</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modalMask" id="authModal" onclick="if(event.target===this) closeAuthModal()">
+    <div class="modal">
+      <div class="modalHead">
+        <h3 style="margin:0">ระบบสมาชิก</h3>
+        <button class="btn btnGhost" onclick="closeAuthModal()">ปิด</button>
+      </div>
+      <div class="seg" style="margin-top:16px">
+        <button id="tabLoginBtn" class="active" onclick="switchAuthTab('login')">เข้าสู่ระบบ</button>
+        <button id="tabRegisterBtn" onclick="switchAuthTab('register')">สมัครสมาชิก</button>
+      </div>
+      <div id="authAlert" class="alert" style="margin-top:14px"></div>
+
+      <div id="loginTab" style="margin-top:16px">
+        <div class="grid2">
+          <div><div class="muted" style="font-size:12px;margin-bottom:6px">อีเมล</div><input id="loginEmail" class="input" placeholder="you@example.com"></div>
+          <div><div class="muted" style="font-size:12px;margin-bottom:6px">รหัสผ่าน</div><input id="loginPassword" type="password" class="input" placeholder="รหัสผ่าน"></div>
+        </div>
+        <div style="margin-top:14px;display:flex;justify-content:flex-end"><button class="btn btnPrimary" onclick="memberLogin()">เข้าสู่ระบบ</button></div>
+      </div>
+
+      <div id="registerTab" style="display:none;margin-top:16px">
+        <div class="seg">
+          <button id="regTypeIndividual" class="active" onclick="setRegisterType('individual')">บุคคลธรรมดา</button>
+          <button id="regTypeCompany" onclick="setRegisterType('company')">นิติบุคคล</button>
+        </div>
+        <div class="grid2" style="margin-top:14px">
+          <div><div class="muted" style="font-size:12px;margin-bottom:6px">อีเมล</div><input id="regEmail" class="input" placeholder="you@example.com"></div>
+          <div><div class="muted" style="font-size:12px;margin-bottom:6px">รหัสผ่าน</div><input id="regPassword" type="password" class="input" placeholder="อย่างน้อย 6 ตัวอักษร"></div>
+          <div><div class="muted" style="font-size:12px;margin-bottom:6px">ชื่อผู้ซื้อ / ผู้ติดต่อ</div><input id="regFullName" class="input" placeholder="ชื่อ - นามสกุล"></div>
+          <div><div class="muted" style="font-size:12px;margin-bottom:6px">เบอร์โทร</div><input id="regPhone" class="input" placeholder="08x-xxx-xxxx"></div>
+        </div>
+        <div id="companyFields" class="grid2" style="margin-top:12px;display:none">
+          <div><div class="muted" style="font-size:12px;margin-bottom:6px">ชื่อนิติบุคคล</div><input id="regCompanyName" class="input" placeholder="ชื่อบริษัท"></div>
+          <div><div class="muted" style="font-size:12px;margin-bottom:6px">เลขผู้เสียภาษี</div><input id="regTaxId" class="input" placeholder="เลขผู้เสียภาษี"></div>
+        </div>
+        <div class="grid2" style="margin-top:12px">
+          <div><div class="muted" style="font-size:12px;margin-bottom:6px">ที่อยู่บรรทัด 1</div><input id="regAddress1" class="input" placeholder="บ้านเลขที่ / ถนน"></div>
+          <div><div class="muted" style="font-size:12px;margin-bottom:6px">ที่อยู่บรรทัด 2</div><input id="regAddress2" class="input" placeholder="หมู่บ้าน / อาคาร / ห้อง"></div>
+          <div><div class="muted" style="font-size:12px;margin-bottom:6px">เขต / อำเภอ</div><input id="regDistrict" class="input" placeholder="อำเภอ"></div>
+          <div><div class="muted" style="font-size:12px;margin-bottom:6px">จังหวัด</div><input id="regProvince" class="input" placeholder="จังหวัด"></div>
+          <div><div class="muted" style="font-size:12px;margin-bottom:6px">รหัสไปรษณีย์</div><input id="regPostcode" class="input" placeholder="เช่น 74000"></div>
+        </div>
+        <div style="margin-top:14px;display:flex;justify-content:flex-end"><button class="btn btnPrimary" onclick="memberRegister()">สมัครสมาชิกและบันทึกข้อมูล</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modalMask" id="checkoutModal" onclick="if(event.target===this) closeCheckout()">
+    <div class="modal">
+      <div class="modalHead">
+        <h3 style="margin:0">สรุปคำสั่งซื้อ</h3>
+        <button class="btn btnGhost" onclick="closeCheckout()">ปิด</button>
+      </div>
+      <div id="checkoutAlert" class="alert" style="margin-top:14px"></div>
+      <div class="muted" style="margin-top:10px">สมาชิกที่เข้าสู่ระบบอยู่แล้ว ระบบจะดึงข้อมูลเดิมมาให้โดยอัตโนมัติ</div>
+      <div class="grid2" style="margin-top:16px">
+        <div>
+          <div class="muted" style="font-size:12px;margin-bottom:6px">ประเภทลูกค้า</div>
+          <select id="coAccountType" class="select" onchange="toggleCheckoutType()">
+            <option value="guest">ไม่สมัครสมาชิก</option>
+            <option value="individual">บุคคลธรรมดา</option>
+            <option value="company">นิติบุคคล</option>
+          </select>
+        </div>
+        <div>
+          <div class="muted" style="font-size:12px;margin-bottom:6px">อีเมล</div>
+          <input id="coEmail" class="input" placeholder="you@example.com">
+        </div>
+        <div>
+          <div class="muted" style="font-size:12px;margin-bottom:6px">ชื่อผู้รับ / ผู้ซื้อ</div>
+          <input id="coName" class="input" placeholder="ชื่อ - นามสกุล">
+        </div>
+        <div>
+          <div class="muted" style="font-size:12px;margin-bottom:6px">เบอร์โทร</div>
+          <input id="coPhone" class="input" placeholder="08x-xxx-xxxx">
+        </div>
+      </div>
+      <div id="checkoutCompany" class="grid2" style="margin-top:12px;display:none">
+        <div><div class="muted" style="font-size:12px;margin-bottom:6px">ชื่อนิติบุคคล</div><input id="coCompany" class="input" placeholder="ชื่อบริษัท"></div>
+        <div><div class="muted" style="font-size:12px;margin-bottom:6px">เลขผู้เสียภาษี</div><input id="coTaxId" class="input" placeholder="เลขผู้เสียภาษี"></div>
+      </div>
+      <div class="grid2" style="margin-top:12px">
+        <div><div class="muted" style="font-size:12px;margin-bottom:6px">ที่อยู่บรรทัด 1</div><input id="coAddress1" class="input" placeholder="บ้านเลขที่ / ถนน"></div>
+        <div><div class="muted" style="font-size:12px;margin-bottom:6px">ที่อยู่บรรทัด 2</div><input id="coAddress2" class="input" placeholder="หมู่บ้าน / อาคาร / ห้อง"></div>
+        <div><div class="muted" style="font-size:12px;margin-bottom:6px">เขต / อำเภอ</div><input id="coDistrict" class="input" placeholder="อำเภอ"></div>
+        <div><div class="muted" style="font-size:12px;margin-bottom:6px">จังหวัด</div><input id="coProvince" class="input" placeholder="จังหวัด"></div>
+        <div><div class="muted" style="font-size:12px;margin-bottom:6px">รหัสไปรษณีย์</div><input id="coPostcode" class="input" placeholder="เช่น 74000"></div>
+      </div>
+      <div style="margin-top:12px"><div class="muted" style="font-size:12px;margin-bottom:6px">หมายเหตุ</div><textarea id="coNote" class="textarea" placeholder="รายละเอียดเพิ่มเติม"></textarea></div>
+      <div style="margin-top:16px;border-top:1px solid var(--line);padding-top:16px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span class="muted">ยอดสินค้า</span><strong id="coSubtotal">฿0</strong></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span class="muted">ค่าจัดส่ง</span><strong id="coShipping">฿0</strong></div>
+        <div style="display:flex;justify-content:space-between;font-size:20px"><strong>ยอดรวม</strong><strong id="coTotal">฿0</strong></div>
+      </div>
+      <div style="margin-top:16px;display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap">
+        <button class="btn btnGhost" onclick="closeCheckout()">ยกเลิก</button>
+        <button class="btn btnPrimary" onclick="submitCheckout()">ยืนยันสั่งซื้อ</button>
       </div>
     </div>
   </div>
@@ -105,44 +213,38 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 let PRODUCTS = [];
 let CART = [];
+let MEMBER = null;
+let MEMBER_PROFILE = null;
+let MEMBER_ADDRESS = null;
+let REGISTER_TYPE = 'individual';
 
 function money(n){ return `฿${Number(n||0).toLocaleString('th-TH',{minimumFractionDigits:0,maximumFractionDigits:2})}` }
 function esc(s=''){ return String(s).replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;' }[m])) }
 function emojiForBadge(b=''){ if(/ใหม่/.test(b)) return '✨'; if(/ขายดี/.test(b)) return '🔥'; return '📦'; }
+function alertBox(id,msg=''){ const el=document.getElementById(id); el.textContent=msg; el.classList.toggle('show',!!msg); }
+function currentCartSubtotal(){ return CART.reduce((s,i)=>s+i.price*i.qty,0); }
+function shippingFee(){ return currentCartSubtotal() > 1200 ? 0 : (CART.length ? 50 : 0); }
+function cartTotal(){ return currentCartSubtotal() + shippingFee(); }
 
 async function loadSiteContent(){
-  const { data, error } = await supabase.from('site_content').select('key, value');
-  if(error) return;
+  const { data } = await supabase.from('site_content').select('key, value');
   const map = Object.fromEntries((data||[]).map(i=>[i.key, i.value]));
   const hero = map.hero || {};
   document.getElementById('heroEyebrow').textContent = hero.eyebrow || 'ACSHOP';
   document.getElementById('heroTitle').textContent = hero.title || 'อะไหล่ปริ้นเตอร์ พร้อมส่ง';
-  document.getElementById('heroSubtitle').textContent = hero.subtitle || 'หน้าร้านเวอร์ชันเชื่อมฐานข้อมูลจริง';
+  document.getElementById('heroSubtitle').textContent = hero.subtitle || 'ระบบสมาชิกช่วยจำข้อมูลลูกค้าให้แล้ว';
   const ticker = (map.ticker && Array.isArray(map.ticker.items) ? map.ticker.items : ['พร้อมส่ง','สินค้าใหม่','ของแท้','ส่งไว']);
-  const html = [...ticker, ...ticker].map(t=>`<span><b>•</b> ${esc(t)}</span>`).join('');
-  document.getElementById('tickerTrack').innerHTML = html;
+  document.getElementById('tickerTrack').innerHTML = [...ticker,...ticker].map(t=>`<span><b>•</b> ${esc(t)}</span>`).join('');
 }
 
 async function loadProducts(){
-  const { data, error } = await supabase
-    .from('catalog_products')
-    .select('id, sku, name, short_desc, description, price, compare_at_price, image_url, badge, featured, inventory:inventory_id(stock_on_hand,reserved)')
-    .eq('status','active');
-
+  const { data, error } = await supabase.from('catalog_products').select('id, sku, name, short_desc, description, price, compare_at_price, image_url, badge, featured, inventory:inventory_id(stock_on_hand,reserved)').eq('status','active');
   if(error){
-    document.getElementById('shopHealth').textContent = 'Config required';
     document.getElementById('shopNotice').style.display = 'block';
-    document.getElementById('shopNotice').textContent = 'ยังไม่ได้ตั้งค่า Supabase หรือ policy ยังไม่พร้อม';
-    console.error(error);
+    document.getElementById('shopNotice').textContent = 'ยังไม่ได้ติดตั้ง SQL หรือ policy ยังไม่พร้อม';
     return;
   }
-
-  PRODUCTS = (data||[]).map(p=>{
-    const inv = Array.isArray(p.inventory) ? p.inventory[0] : p.inventory;
-    const available = Math.max(0, (inv?.stock_on_hand||0) - (inv?.reserved||0));
-    return { ...p, available };
-  }).filter(p=>p.available > 0);
-
+  PRODUCTS = (data||[]).map(p=>{ const inv = Array.isArray(p.inventory) ? p.inventory[0] : p.inventory; return { ...p, available: Math.max(0,(inv?.stock_on_hand||0)-(inv?.reserved||0)) }; }).filter(p=>p.available>0);
   document.getElementById('statProducts').textContent = PRODUCTS.length;
   document.getElementById('statFeatured').textContent = PRODUCTS.filter(p=>p.featured).length;
   document.getElementById('statStock').textContent = PRODUCTS.reduce((s,p)=>s+p.available,0);
@@ -153,58 +255,216 @@ function renderProducts(){
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
   const sort = document.getElementById('sortSelect').value;
   let rows = PRODUCTS.filter(p=> !q || [p.name,p.sku,p.short_desc].join(' ').toLowerCase().includes(q));
-  rows.sort((a,b)=>{
-    if(sort==='priceAsc') return Number(a.price)-Number(b.price);
-    if(sort==='priceDesc') return Number(b.price)-Number(a.price);
-    if(sort==='name') return a.name.localeCompare(b.name,'th');
-    return Number(b.featured)-Number(a.featured) || a.name.localeCompare(b.name,'th');
-  });
+  rows.sort((a,b)=>{ if(sort==='priceAsc') return Number(a.price)-Number(b.price); if(sort==='priceDesc') return Number(b.price)-Number(a.price); if(sort==='name') return a.name.localeCompare(b.name,'th'); return Number(b.featured)-Number(a.featured) || a.name.localeCompare(b.name,'th'); });
   const grid = document.getElementById('productGrid');
   if(!rows.length){ grid.innerHTML = '<div class="empty">ยังไม่มีสินค้าที่ตรงเงื่อนไข</div>'; return; }
-  grid.innerHTML = rows.map(p=>`
-    <article class="card">
-      <div class="image">${p.image_url ? `<img src="${esc(p.image_url)}" alt="${esc(p.name)}" style="width:100%;height:100%;object-fit:cover">` : emojiForBadge(p.badge)}</div>
-      <div class="body">
-        ${p.badge ? `<div class="badge">${esc(p.badge)}</div>` : ''}
-        <div class="title">${esc(p.name)}</div>
-        <div class="muted" style="font-size:12px;margin-bottom:4px">SKU: ${esc(p.sku)}</div>
-        <div class="desc">${esc(p.short_desc || p.description || '')}</div>
-        <div class="priceRow">
-          <div class="price">${money(p.price)}</div>
-          ${p.compare_at_price ? `<div class="compare">${money(p.compare_at_price)}</div>` : ''}
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
-          <div class="stock">พร้อมขาย ${p.available} ชิ้น</div>
-          <button class="btn btnPrimary" onclick="addToCart('${p.id}')">เพิ่มลงตะกร้า</button>
-        </div>
-      </div>
-    </article>
-  `).join('');
+  grid.innerHTML = rows.map(p=>`<article class="card"><div class="image">${p.image_url ? `<img src="${esc(p.image_url)}" alt="${esc(p.name)}" style="width:100%;height:100%;object-fit:cover">` : emojiForBadge(p.badge)}</div><div class="body">${p.badge ? `<div class="badge">${esc(p.badge)}</div>` : ''}<div class="title">${esc(p.name)}</div><div class="muted" style="font-size:12px;margin-bottom:4px">SKU: ${esc(p.sku)}</div><div class="desc">${esc(p.short_desc || p.description || '')}</div><div class="priceRow"><div class="price">${money(p.price)}</div>${p.compare_at_price ? `<div class="compare">${money(p.compare_at_price)}</div>` : ''}</div><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><div class="stock">พร้อมขาย ${p.available} ชิ้น</div><button class="btn btnPrimary" onclick="addToCart('${p.id}')">เพิ่มลงตะกร้า</button></div></div></article>`).join('');
 }
 
 function addToCart(id){
-  const item = PRODUCTS.find(p=>p.id===id);
-  if(!item) return;
+  const item = PRODUCTS.find(p=>p.id===id); if(!item) return;
   const found = CART.find(x=>x.id===id);
   if(found){ if(found.qty < item.available) found.qty += 1; }
-  else CART.push({id:item.id,name:item.name,price:item.price,qty:1});
+  else CART.push({id:item.id,name:item.name,price:Number(item.price),qty:1});
   renderCart();
 }
+function removeCart(id){ CART = CART.filter(i=>i.id!==id); renderCart(); }
 function renderCart(){
   document.getElementById('cartCount').textContent = CART.reduce((s,i)=>s+i.qty,0);
-  document.getElementById('cartTotal').textContent = money(CART.reduce((s,i)=>s+i.price*i.qty,0));
+  document.getElementById('cartTotal').textContent = money(cartTotal());
   const el = document.getElementById('cartList');
   if(!CART.length){ el.innerHTML = '<div class="empty">ยังไม่มีสินค้าในตะกร้า</div>'; return; }
-  el.innerHTML = CART.map(i=>`<div class="cartItem"><div><strong>${esc(i.name)}</strong><div class="muted">${money(i.price)} × ${i.qty}</div></div><button class="btn" onclick="removeCart('${i.id}')">ลบ</button></div>`).join('');
+  el.innerHTML = CART.map(i=>`<div class="cartItem"><div><strong>${esc(i.name)}</strong><div class="muted">${money(i.price)} × ${i.qty}</div></div><button class="btn btnGhost" onclick="removeCart('${i.id}')">ลบ</button></div>`).join('');
 }
-function removeCart(id){ CART = CART.filter(i=>i.id!==id); renderCart(); }
 function openCart(){ document.getElementById('drawerMask').classList.add('open'); }
 function closeCart(){ document.getElementById('drawerMask').classList.remove('open'); }
 
+function openAuthModal(){ document.getElementById('authModal').classList.add('open'); }
+function closeAuthModal(){ document.getElementById('authModal').classList.remove('open'); alertBox('authAlert',''); }
+function switchAuthTab(tab){
+  document.getElementById('loginTab').style.display = tab==='login' ? 'block' : 'none';
+  document.getElementById('registerTab').style.display = tab==='register' ? 'block' : 'none';
+  document.getElementById('tabLoginBtn').classList.toggle('active', tab==='login');
+  document.getElementById('tabRegisterBtn').classList.toggle('active', tab==='register');
+  alertBox('authAlert','');
+}
+function setRegisterType(type){
+  REGISTER_TYPE = type;
+  document.getElementById('regTypeIndividual').classList.toggle('active', type==='individual');
+  document.getElementById('regTypeCompany').classList.toggle('active', type==='company');
+  document.getElementById('companyFields').style.display = type==='company' ? 'grid' : 'none';
+}
+
+async function memberRegister(){
+  alertBox('authAlert','');
+  const email = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
+  const fullName = document.getElementById('regFullName').value.trim();
+  const phone = document.getElementById('regPhone').value.trim();
+  const companyName = document.getElementById('regCompanyName').value.trim();
+  const taxId = document.getElementById('regTaxId').value.trim();
+  if(!email || !password || !fullName || !phone) return alertBox('authAlert','กรอกอีเมล รหัสผ่าน ชื่อ และเบอร์โทรให้ครบ');
+  if(REGISTER_TYPE==='company' && !companyName) return alertBox('authAlert','กรุณากรอกชื่อนิติบุคคล');
+  const { error } = await supabase.auth.signUp({ email, password });
+  if(error) return alertBox('authAlert', 'สมัครสมาชิกไม่สำเร็จ: ' + error.message);
+  const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+  if(signInError) return alertBox('authAlert', 'สมัครสมาชิกสำเร็จ แต่เข้าสู่ระบบอัตโนมัติไม่สำเร็จ');
+  await saveMemberProfileFromRegister();
+  await refreshMember();
+  closeAuthModal();
+}
+
+async function saveMemberProfileFromRegister(){
+  const payload = {
+    p_account_type: REGISTER_TYPE,
+    p_full_name: document.getElementById('regFullName').value.trim(),
+    p_company_name: document.getElementById('regCompanyName').value.trim(),
+    p_tax_id: document.getElementById('regTaxId').value.trim(),
+    p_phone: document.getElementById('regPhone').value.trim(),
+    p_email: document.getElementById('regEmail').value.trim(),
+    p_address_line1: document.getElementById('regAddress1').value.trim(),
+    p_address_line2: document.getElementById('regAddress2').value.trim(),
+    p_district: document.getElementById('regDistrict').value.trim(),
+    p_province: document.getElementById('regProvince').value.trim(),
+    p_postcode: document.getElementById('regPostcode').value.trim()
+  };
+  const { error } = await supabase.rpc('upsert_customer_profile_and_address', payload);
+  if(error) console.error(error);
+}
+
+async function memberLogin(){
+  alertBox('authAlert','');
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  if(!email || !password) return alertBox('authAlert','กรอกอีเมลและรหัสผ่านให้ครบ');
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  if(error) return alertBox('authAlert','เข้าสู่ระบบไม่สำเร็จ: ' + error.message);
+  await refreshMember();
+  closeAuthModal();
+}
+
+async function memberLogout(){ await supabase.auth.signOut(); MEMBER=null; MEMBER_PROFILE=null; MEMBER_ADDRESS=null; updateMemberUI(); }
+
+async function refreshMember(){
+  const { data:{ user } } = await supabase.auth.getUser();
+  MEMBER = user || null;
+  if(!MEMBER){ MEMBER_PROFILE = null; MEMBER_ADDRESS = null; updateMemberUI(); return; }
+  const [profileRes, addressRes] = await Promise.all([
+    supabase.from('customer_profiles').select('*').eq('id', MEMBER.id).maybeSingle(),
+    supabase.from('customer_addresses').select('*').eq('customer_id', MEMBER.id).eq('is_default', true).maybeSingle()
+  ]);
+  MEMBER_PROFILE = profileRes.data || null;
+  MEMBER_ADDRESS = addressRes.data || null;
+  updateMemberUI();
+}
+
+function updateMemberUI(){
+  const chip = document.getElementById('memberChip');
+  const btn = document.getElementById('memberBtn');
+  if(MEMBER){
+    chip.textContent = MEMBER_PROFILE?.account_type === 'company' ? 'สมาชิกนิติบุคคล' : 'สมาชิก';
+    btn.textContent = 'ออกจากระบบ';
+    btn.onclick = memberLogout;
+    document.getElementById('checkoutHint').textContent = 'บัญชีสมาชิกของคุณจะช่วยจำข้อมูลจัดส่งไว้สำหรับครั้งถัดไป';
+  } else {
+    chip.textContent = 'ลูกค้าทั่วไป';
+    btn.textContent = 'เข้าสู่ระบบ / สมัครสมาชิก';
+    btn.onclick = openAuthModal;
+    document.getElementById('checkoutHint').textContent = 'สมัครสมาชิกครั้งแรก เพื่อให้ครั้งถัดไปไม่ต้องกรอกชื่อ ที่อยู่ และเบอร์ใหม่';
+  }
+}
+
+function openCheckout(){
+  if(!CART.length) return;
+  document.getElementById('checkoutModal').classList.add('open');
+  document.getElementById('coSubtotal').textContent = money(currentCartSubtotal());
+  document.getElementById('coShipping').textContent = money(shippingFee());
+  document.getElementById('coTotal').textContent = money(cartTotal());
+  prefillCheckout();
+}
+function closeCheckout(){ document.getElementById('checkoutModal').classList.remove('open'); alertBox('checkoutAlert',''); }
+function toggleCheckoutType(){ document.getElementById('checkoutCompany').style.display = document.getElementById('coAccountType').value==='company' ? 'grid' : 'none'; }
+function prefillCheckout(){
+  const type = MEMBER_PROFILE?.account_type || 'guest';
+  document.getElementById('coAccountType').value = type;
+  document.getElementById('coEmail').value = MEMBER_PROFILE?.email || MEMBER?.email || '';
+  document.getElementById('coName').value = MEMBER_PROFILE?.full_name || '';
+  document.getElementById('coPhone').value = MEMBER_PROFILE?.phone || MEMBER_ADDRESS?.phone || '';
+  document.getElementById('coCompany').value = MEMBER_PROFILE?.company_name || '';
+  document.getElementById('coTaxId').value = MEMBER_PROFILE?.tax_id || '';
+  document.getElementById('coAddress1').value = MEMBER_ADDRESS?.address_line1 || '';
+  document.getElementById('coAddress2').value = MEMBER_ADDRESS?.address_line2 || '';
+  document.getElementById('coDistrict').value = MEMBER_ADDRESS?.district || '';
+  document.getElementById('coProvince').value = MEMBER_ADDRESS?.province || '';
+  document.getElementById('coPostcode').value = MEMBER_ADDRESS?.postcode || '';
+  toggleCheckoutType();
+}
+
+async function submitCheckout(){
+  alertBox('checkoutAlert','');
+  const accountType = document.getElementById('coAccountType').value;
+  const email = document.getElementById('coEmail').value.trim();
+  const name = document.getElementById('coName').value.trim();
+  const phone = document.getElementById('coPhone').value.trim();
+  const company = document.getElementById('coCompany').value.trim();
+  const taxId = document.getElementById('coTaxId').value.trim();
+  const a1 = document.getElementById('coAddress1').value.trim();
+  const a2 = document.getElementById('coAddress2').value.trim();
+  const district = document.getElementById('coDistrict').value.trim();
+  const province = document.getElementById('coProvince').value.trim();
+  const postcode = document.getElementById('coPostcode').value.trim();
+  const note = document.getElementById('coNote').value.trim();
+  if(!name || !phone || !a1 || !district || !province || !postcode) return alertBox('checkoutAlert','กรุณากรอกชื่อ เบอร์โทร และที่อยู่จัดส่งให้ครบ');
+  if(accountType==='company' && !company) return alertBox('checkoutAlert','กรุณากรอกชื่อนิติบุคคล');
+  if(MEMBER){
+    const { error: upsertErr } = await supabase.rpc('upsert_customer_profile_and_address', {
+      p_account_type: accountType === 'guest' ? 'individual' : accountType,
+      p_full_name: name,
+      p_company_name: company,
+      p_tax_id: taxId,
+      p_phone: phone,
+      p_email: email,
+      p_address_line1: a1,
+      p_address_line2: a2,
+      p_district: district,
+      p_province: province,
+      p_postcode: postcode
+    });
+    if(upsertErr) console.error(upsertErr);
+  }
+  const payload = {
+    p_customer_name: name,
+    p_phone: phone,
+    p_email: email,
+    p_address: [a1,a2,district,province,postcode].filter(Boolean).join(' '),
+    p_note: note,
+    p_subtotal: currentCartSubtotal(),
+    p_shipping_fee: shippingFee(),
+    p_discount: 0,
+    p_total: cartTotal(),
+    p_account_type: accountType,
+    p_company_name: company,
+    p_tax_id: taxId,
+    p_items: CART.map(i=>({ catalog_product_id: i.id, qty: i.qty }))
+  };
+  const { data, error } = await supabase.rpc('place_order_public', payload);
+  if(error) return alertBox('checkoutAlert','สั่งซื้อไม่สำเร็จ: ' + error.message);
+  const row = Array.isArray(data) ? data[0] : data;
+  CART = [];
+  renderCart();
+  closeCart();
+  closeCheckout();
+  await refreshMember();
+  alert('สั่งซื้อสำเร็จ เลขออเดอร์: ' + (row?.order_no || '-'));
+}
+
 (async function init(){
   renderCart();
+  setRegisterType('individual');
   await loadSiteContent();
   await loadProducts();
+  await refreshMember();
+  supabase.auth.onAuthStateChange(async ()=>{ await refreshMember(); });
 })();
 </script>
 </body>
