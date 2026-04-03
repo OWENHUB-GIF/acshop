@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACShop Secure Public</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root{--bg:#f6f7fb;--card:#ffffff;--soft:#eef2ff;--text:#0f172a;--dim:#64748b;--line:#e2e8f0;--accent:#2563eb;--accent2:#1d4ed8;--ok:#16a34a;--danger:#dc2626;--r:18px}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,'Noto Sans Thai',sans-serif;background:var(--bg);color:var(--text)}
+    .nav{position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:14px 24px;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+    .logo{font-weight:800;letter-spacing:-.03em}.chip{padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--dim);font-size:13px}
+    .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+    .hero{padding:64px 0 28px}.heroBox{display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:stretch}
+    .heroMain,.heroSide{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:28px;box-shadow:0 18px 60px rgba(15,23,42,.05)}
+    .eyebrow{font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.14em;text-transform:uppercase}.hero h1{font-size:clamp(34px,6vw,62px);line-height:1.02;letter-spacing:-.05em;margin:10px 0 14px}.sub{font-size:16px;color:var(--dim);line-height:1.8;max-width:640px}
+    .ticker{margin-top:18px;overflow:hidden;border-radius:999px;border:1px solid var(--line);background:#fff}.tickerTrack{display:flex;gap:28px;padding:12px 18px;white-space:nowrap;animation:mar 24s linear infinite}.tickerTrack span{color:var(--dim);font-size:13px}.tickerTrack b{color:var(--text)} @keyframes mar{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}.stat{padding:16px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,#fff,#f8fafc)}.stat .v{font-size:28px;font-weight:800;letter-spacing:-.04em}.stat .l{font-size:13px;color:var(--dim)}
+    .section{padding:22px 0 38px}.sectionHead{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:18px}.section h2{margin:0;font-size:28px;letter-spacing:-.03em}.section p{margin:6px 0 0;color:var(--dim)}
+    .tools{display:flex;gap:12px;flex-wrap:wrap}.input,.select{height:44px;border:1px solid var(--line);border-radius:14px;padding:0 14px;background:#fff;font:inherit}.input{min-width:260px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}.card{background:#fff;border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:0 10px 30px rgba(15,23,42,.04)}
+    .image{aspect-ratio:1/1;background:linear-gradient(135deg,#eff6ff,#f8fafc);display:flex;align-items:center;justify-content:center;font-size:48px}.body{padding:16px 16px 18px}.badge{display:inline-flex;padding:6px 10px;border-radius:999px;font-size:12px;background:var(--soft);color:var(--accent);font-weight:700;margin-bottom:8px}
+    .title{font-size:17px;font-weight:700;letter-spacing:-.02em;margin-bottom:6px}.desc{font-size:13px;line-height:1.7;color:var(--dim);min-height:44px}.priceRow{display:flex;gap:8px;align-items:end;margin:14px 0}.price{font-size:24px;font-weight:800;letter-spacing:-.04em}.compare{font-size:14px;color:#94a3b8;text-decoration:line-through}
+    .stock{font-size:12px;color:var(--ok);font-weight:700}.btn{height:42px;border:none;border-radius:14px;padding:0 16px;font:inherit;font-weight:700;cursor:pointer}.btnPrimary{background:var(--accent);color:#fff}.btnPrimary:hover{background:var(--accent2)}
+    .drawerMask{position:fixed;inset:0;background:rgba(15,23,42,.32);display:none;align-items:stretch;justify-content:flex-end}.drawerMask.open{display:flex}.drawer{width:min(420px,100vw);background:#fff;padding:18px;border-left:1px solid var(--line);display:flex;flex-direction:column}
+    .drawerHead{display:flex;justify-content:space-between;align-items:center}.cartList{flex:1;overflow:auto;margin-top:14px}.cartItem{display:grid;grid-template-columns:1fr auto;gap:8px;padding:12px 0;border-bottom:1px solid var(--line)} .muted{color:var(--dim)}
+    .empty,.notice{padding:24px;border:1px dashed var(--line);border-radius:20px;background:#fff;color:var(--dim);text-align:center}
+    .checkout{display:grid;gap:10px}.footer{padding:30px 0 60px;color:var(--dim);font-size:13px}
+    @media(max-width:860px){.heroBox{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.sectionHead{align-items:start;flex-direction:column}.input{min-width:100%}}
+  </style>
+</head>
+<body>
+  <div class="nav">
+    <div class="logo">ACShop</div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <span class="chip" id="shopHealth">Database ready</span>
+      <button class="btn btnPrimary" onclick="openCart()">ตะกร้า <span id="cartCount">0</span></button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <section class="hero">
+      <div class="heroBox">
+        <div class="heroMain">
+          <div class="eyebrow" id="heroEyebrow">ACSHOP</div>
+          <h1 id="heroTitle">อะไหล่ปริ้นเตอร์ พร้อมส่ง</h1>
+          <div class="sub" id="heroSubtitle">หน้าร้านเวอร์ชันเชื่อมฐานข้อมูลจริง และแยกจากหลังบ้านแล้ว</div>
+          <div class="ticker"><div class="tickerTrack" id="tickerTrack"></div></div>
+        </div>
+        <div class="heroSide">
+          <div class="eyebrow">สถานะระบบ</div>
+          <div class="stats">
+            <div class="stat"><div class="v" id="statProducts">0</div><div class="l">สินค้าที่เปิดขาย</div></div>
+            <div class="stat"><div class="v" id="statFeatured">0</div><div class="l">สินค้าปักหมุด</div></div>
+            <div class="stat"><div class="v" id="statStock">0</div><div class="l">สต๊อกพร้อมขาย</div></div>
+          </div>
+          <div style="margin-top:16px" class="muted">ไฟล์นี้อ่านเฉพาะสินค้าที่เปิดขายจากฐานข้อมูลผ่าน RLS เท่านั้น</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="sectionHead">
+        <div>
+          <h2>สินค้าพร้อมขาย</h2>
+          <p>ดึงจาก `catalog_products` และเช็คจำนวนคงเหลือจาก `inventory`</p>
+        </div>
+        <div class="tools">
+          <input class="input" id="searchInput" placeholder="ค้นหาชื่อหรือ SKU" oninput="renderProducts()" />
+          <select class="select" id="sortSelect" onchange="renderProducts()">
+            <option value="featured">เรียงตามแนะนำ</option>
+            <option value="priceAsc">ราคาน้อยไปมาก</option>
+            <option value="priceDesc">ราคามากไปน้อย</option>
+            <option value="name">ชื่อสินค้า</option>
+          </select>
+        </div>
+      </div>
+      <div id="productGrid" class="grid"></div>
+      <div id="shopNotice" class="notice" style="display:none;margin-top:14px"></div>
+    </section>
+
+    <div class="footer">ACShop Secure Starter — แยกหน้าร้านออกจากหลังบ้านแล้ว</div>
+  </div>
+
+  <div class="drawerMask" id="drawerMask" onclick="if(event.target===this) closeCart()">
+    <div class="drawer">
+      <div class="drawerHead">
+        <h3 style="margin:0">ตะกร้าสินค้า</h3>
+        <button class="btn" onclick="closeCart()">ปิด</button>
+      </div>
+      <div class="cartList" id="cartList"></div>
+      <div class="checkout">
+        <div style="display:flex;justify-content:space-between"><strong>รวม</strong><strong id="cartTotal">฿0</strong></div>
+        <div class="muted" style="font-size:13px">ตัวอย่างนี้ยังไม่เชื่อม checkout จริง เพื่อกันการเขียน order จากฝั่ง public แบบไม่ครบ flow</div>
+      </div>
+    </div>
+  </div>
+
+<script>
+const SUPABASE_URL = 'https://wdtrkeqwkssdbfgnowun.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndkdHJrZXF3a3NzZGJmZ25vd3VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxNzQ3MTQsImV4cCI6MjA5MDc1MDcxNH0.nxD9wTQvb-aXU61J_KZ5d7tNrgiNQ-wDzgQXlfeEtz8';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let PRODUCTS = [];
+let CART = [];
+
+function money(n){ return `฿${Number(n||0).toLocaleString('th-TH',{minimumFractionDigits:0,maximumFractionDigits:2})}` }
+function esc(s=''){ return String(s).replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;' }[m])) }
+function emojiForBadge(b=''){ if(/ใหม่/.test(b)) return '✨'; if(/ขายดี/.test(b)) return '🔥'; return '📦'; }
+
+async function loadSiteContent(){
+  const { data, error } = await supabase.from('site_content').select('key, value');
+  if(error) return;
+  const map = Object.fromEntries((data||[]).map(i=>[i.key, i.value]));
+  const hero = map.hero || {};
+  document.getElementById('heroEyebrow').textContent = hero.eyebrow || 'ACSHOP';
+  document.getElementById('heroTitle').textContent = hero.title || 'อะไหล่ปริ้นเตอร์ พร้อมส่ง';
+  document.getElementById('heroSubtitle').textContent = hero.subtitle || 'หน้าร้านเวอร์ชันเชื่อมฐานข้อมูลจริง';
+  const ticker = (map.ticker && Array.isArray(map.ticker.items) ? map.ticker.items : ['พร้อมส่ง','สินค้าใหม่','ของแท้','ส่งไว']);
+  const html = [...ticker, ...ticker].map(t=>`<span><b>•</b> ${esc(t)}</span>`).join('');
+  document.getElementById('tickerTrack').innerHTML = html;
+}
+
+async function loadProducts(){
+  const { data, error } = await supabase
+    .from('catalog_products')
+    .select('id, sku, name, short_desc, description, price, compare_at_price, image_url, badge, featured, inventory:inventory_id(stock_on_hand,reserved)')
+    .eq('status','active');
+
+  if(error){
+    document.getElementById('shopHealth').textContent = 'Config required';
+    document.getElementById('shopNotice').style.display = 'block';
+    document.getElementById('shopNotice').textContent = 'ยังไม่ได้ตั้งค่า Supabase หรือ policy ยังไม่พร้อม';
+    console.error(error);
+    return;
+  }
+
+  PRODUCTS = (data||[]).map(p=>{
+    const inv = Array.isArray(p.inventory) ? p.inventory[0] : p.inventory;
+    const available = Math.max(0, (inv?.stock_on_hand||0) - (inv?.reserved||0));
+    return { ...p, available };
+  }).filter(p=>p.available > 0);
+
+  document.getElementById('statProducts').textContent = PRODUCTS.length;
+  document.getElementById('statFeatured').textContent = PRODUCTS.filter(p=>p.featured).length;
+  document.getElementById('statStock').textContent = PRODUCTS.reduce((s,p)=>s+p.available,0);
+  renderProducts();
+}
+
+function renderProducts(){
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  const sort = document.getElementById('sortSelect').value;
+  let rows = PRODUCTS.filter(p=> !q || [p.name,p.sku,p.short_desc].join(' ').toLowerCase().includes(q));
+  rows.sort((a,b)=>{
+    if(sort==='priceAsc') return Number(a.price)-Number(b.price);
+    if(sort==='priceDesc') return Number(b.price)-Number(a.price);
+    if(sort==='name') return a.name.localeCompare(b.name,'th');
+    return Number(b.featured)-Number(a.featured) || a.name.localeCompare(b.name,'th');
+  });
+  const grid = document.getElementById('productGrid');
+  if(!rows.length){ grid.innerHTML = '<div class="empty">ยังไม่มีสินค้าที่ตรงเงื่อนไข</div>'; return; }
+  grid.innerHTML = rows.map(p=>`
+    <article class="card">
+      <div class="image">${p.image_url ? `<img src="${esc(p.image_url)}" alt="${esc(p.name)}" style="width:100%;height:100%;object-fit:cover">` : emojiForBadge(p.badge)}</div>
+      <div class="body">
+        ${p.badge ? `<div class="badge">${esc(p.badge)}</div>` : ''}
+        <div class="title">${esc(p.name)}</div>
+        <div class="muted" style="font-size:12px;margin-bottom:4px">SKU: ${esc(p.sku)}</div>
+        <div class="desc">${esc(p.short_desc || p.description || '')}</div>
+        <div class="priceRow">
+          <div class="price">${money(p.price)}</div>
+          ${p.compare_at_price ? `<div class="compare">${money(p.compare_at_price)}</div>` : ''}
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+          <div class="stock">พร้อมขาย ${p.available} ชิ้น</div>
+          <button class="btn btnPrimary" onclick="addToCart('${p.id}')">เพิ่มลงตะกร้า</button>
+        </div>
+      </div>
+    </article>
+  `).join('');
+}
+
+function addToCart(id){
+  const item = PRODUCTS.find(p=>p.id===id);
+  if(!item) return;
+  const found = CART.find(x=>x.id===id);
+  if(found){ if(found.qty < item.available) found.qty += 1; }
+  else CART.push({id:item.id,name:item.name,price:item.price,qty:1});
+  renderCart();
+}
+function renderCart(){
+  document.getElementById('cartCount').textContent = CART.reduce((s,i)=>s+i.qty,0);
+  document.getElementById('cartTotal').textContent = money(CART.reduce((s,i)=>s+i.price*i.qty,0));
+  const el = document.getElementById('cartList');
+  if(!CART.length){ el.innerHTML = '<div class="empty">ยังไม่มีสินค้าในตะกร้า</div>'; return; }
+  el.innerHTML = CART.map(i=>`<div class="cartItem"><div><strong>${esc(i.name)}</strong><div class="muted">${money(i.price)} × ${i.qty}</div></div><button class="btn" onclick="removeCart('${i.id}')">ลบ</button></div>`).join('');
+}
+function removeCart(id){ CART = CART.filter(i=>i.id!==id); renderCart(); }
+function openCart(){ document.getElementById('drawerMask').classList.add('open'); }
+function closeCart(){ document.getElementById('drawerMask').classList.remove('open'); }
+
+(async function init(){
+  renderCart();
+  await loadSiteContent();
+  await loadProducts();
+})();
+</script>
+</body>
+</html>
